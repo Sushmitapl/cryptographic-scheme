@@ -17,6 +17,7 @@ encryption(){
 	      encrypted_file=$4;
 
   			# Generate random session Key
+  			echo "Generating random session key..."
 				gen_session_key;
 
 				# Read the session key of the file
@@ -24,15 +25,19 @@ encryption(){
 				session_key=$(cat "$session_key_file");
 
 				# Encrypt the file symmetrically using the session Key
+				echo "Encrypting the file..."
 				encrypt_file $plaintext_file $encrypted_file $session_key;
 
 				# Encrypt the Session Key with the Public key of the recipient
+				echo "Encrypting the session key..."
         encrypt_session $session_key $receiver_public_key_file;
 
 				# Sign the encrypted File with the Private Key of the sender
+				echo "Signing the encrypted file..."
 				sign_enc_file $sender_private_key_file $encrypted_file;
 
 				#compress all the files generated
+				echo "Compressing the files..."
         gen_tar_file $encrypted_file;
 
 				#remove the files
